@@ -62,7 +62,7 @@ func (s Square) String() string {
 type Board [3][3]Square
 
 func (b Board) String() string {
-	return fmt.Sprintf("%v|%v|%v\n%v|%v|%v\n%v|%v|%v\n",
+	return fmt.Sprintf("%v|%v|%v\n%v|%v|%v\n%v|%v|%v",
 		b[0][0], b[0][1], b[0][2],
 		b[1][0], b[1][1], b[1][2],
 		b[2][0], b[2][1], b[2][2])
@@ -79,9 +79,10 @@ func (m Move) IsValid(b Board) bool {
 }
 
 type Game struct {
-	Board  Board
-	Turn   int
-	Result Result
+	Board   Board
+	Turn    int
+	Result  Result
+	History []Move
 }
 
 func (g Game) CheckState(player Square, m Move) Result {
@@ -133,6 +134,7 @@ func (g Game) Apply(m Move) (Game, error) {
 
 	// increment turn counter
 	g.Turn++
+	g.History = append(g.History, m)
 
 	// check for winner
 	g.Result = g.CheckState(player, m)
@@ -147,7 +149,8 @@ type Player interface {
 
 func New(p1, p2 Player) Game {
 	g := Game{
-		Board: Board{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+		Board:   Board{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+		History: []Move{},
 	}
 
 	for i := 0; i < 9; i++ {

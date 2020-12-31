@@ -52,7 +52,7 @@ func (p MinMaxPlayer) max(g game.Game) EvaluatedMove {
 				continue
 			}
 
-			// Immdetialy win, obviously the best choice
+			// Immediately win, obviously the best choice
 			if (g1.Result == game.OWin && player == 1) || (g1.Result == game.XWin && player == 2) {
 				ev.Score = 1
 				p.MaxCache[g.Board] = ev
